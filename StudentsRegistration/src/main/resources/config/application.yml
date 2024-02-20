@@ -1,0 +1,5 @@
+app:
+  student:
+    init:
+      enabled: ${INIT:true}
+      path: ${INIT_PATH:src/main/resources/default-students.txt}
