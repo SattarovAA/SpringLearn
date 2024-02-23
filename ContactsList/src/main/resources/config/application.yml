@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SERVER_URL:jdbc:postgresql://localhost:5432/contacts_db}
+    username: ${SERVER_USERNAME:user}
+    password: ${SERVER_PASS:pass}
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+server:
+  port: 8081

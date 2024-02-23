@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Student</title>
+</head>
+<body>
+<h1>Edit Student</h1>
+<!--/*@thymesVar id="contact" type="com.example.contactslist.dto.ContactDto"*/-->
+<form th:method="POST"
+      th:action="@{/contacts}"
+      th:object="${contact}">
+    <div th:if="${contact.getId() > 0}">
+        <label for="id">Contact ID: </label>
+        <input type="text" readonly th:field="*{id}" id="id" name="id"/>
+        </p>
+    </div>
+    <label for="firstName">Enter First name: </label>
+    <input type="text" th:field="*{firstName}" id="firstName" name="firstName"/>
+    </p>
+    <label for="lastName">Enter Last name: </label>
+    <input type="text" th:field="*{lastName}" id="lastName" name="lastName"/>
+    </p>
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email" name="email"/>
+    </p>
+    <label for="phone">Enter phone: </label>
+    <input type="text" th:field="*{phone}" id="phone" name="phone"/>
+    </p>
+    <div th:if="${contact.getId() > 0}">
+        <input type="submit" value="Изменить студента"/>
+    </div>
+    <div th:if="${contact.getId() <= 0}">
+        <input type="submit" value="Добавить студента"/>
+    </div>
+</form>
+<form th:method="GET"
+      th:action="@{/contacts}">
+    <input type="submit" value="Main page">
+</form>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact list</title>
+</head>
+<body>
+<h1>Contact list</h1>
+<table>
+    <thead>
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Change</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="contact:${contacts}">
+        <td th:text="${contact.firstName}">
+        <td th:text="${contact.lastName}">
+        <td th:text="${contact.email}">
+        <td th:text="${contact.phone}">
+        <td>
+        <form th:method="GET"
+              th:action="@{/contacts/{id}/edit(id=${contact.getId()})}">
+            <input type="submit" value="Edit">
+        </form>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/contacts/{id}(id=${contact.getId()})}">
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <a href="/contacts/edit">Добавить студента</a>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<hr/>
+<form th:method="GET"
+      th:action="@{/contacts/edit}">
+    <input type="submit" value="Edit">
+</form>
+</body>
+</html>

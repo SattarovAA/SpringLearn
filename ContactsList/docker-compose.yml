@@ -1,0 +1,28 @@
+version: '3'
+services:
+  contact-list:
+    image: contact-list
+    depends_on:
+      - db
+    environment:
+      - "SERVER_URL=jdbc:postgresql://db:5432/contacts_db"
+      - "SERVER_USERNAME = user"
+      - "SERVER_PASS:pass"
+    ports:
+      - "8081:8081"
+    networks:
+      - postgres_bd
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: always
+    environment:
+      - 'POSTGRES_USER=user'
+      - 'POSTGRES_PASSWORD=pass'
+      - 'POSTGRES_DB=contacts_db'
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres_bd
+networks:
+  postgres_bd:
