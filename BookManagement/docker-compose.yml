@@ -1,0 +1,30 @@
+version: '3'
+services:
+  book-management:
+    image: book-management
+    depends_on:
+      - db
+      - redis
+    environment:
+      - "SERVER_URL=jdbc:postgresql://db:5432/book_management_db"
+      - "SERVER_USERNAME=user"
+      - "SERVER_PASS=pass"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
+    ports:
+      - "8081:8081"
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=book_management_db
+    ports:
+      - "5432:5432"
+  redis:
+    container_name: redis
+    image: redis:7.0.12
+    ports:
+      - "6379:6379"

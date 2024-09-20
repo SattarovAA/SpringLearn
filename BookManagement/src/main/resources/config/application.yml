@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: BookManagement
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SERVER_URL:jdbc:postgresql://localhost:5432/book_management_db}
+    username: ${SERVER_USERNAME:postgres}
+    password: ${SERVER_PASS:1322}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+  data:
+    redis:
+      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST:localhost}
+app:
+  redis:
+    enabled: true
+  cache:
+    cacheType: redis
+    cacheNames:
+      - booksByCategoryName
+      - dbBooks
+      - oneByFilterCache
+    caches:
+      booksByCategoryName:
+        expiry: 30s
+      dbBooks:
+        expiry: 30s
+      oneByFilterCache:
+        expiry: 30s
+server:
+  port: 8081
