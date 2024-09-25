@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: OrderStatus
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER:localhost:9092}
+
+app:
+  kafka:
+    KafkaMessageTopicConsumer: "order-topic"
+    KafkaMessageTopic: "order-topic"
+    KafkaMessageTopicProducer: "order-status-topic"
+    KafkaMessageGroupId: "kafka-message-group-id-1"
+server:
+  port: 8082
