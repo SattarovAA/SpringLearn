@@ -1,45 +1,48 @@
-# Book management
-Небольшой REST API «Управление книгами»  с использованием Spring MVC.
+# Task Tracker
 
-Работа со списком книг.<br>
-Работа с базой данных с использованием Spring Boot Data JPA и Spring Boot Redis.<br>
+Небольшой REST API «Трекер задач» с использованием Spring MVC.
+
+Работа с базой данных с использованием MongoDB Reactive.<br>
+
 ## Доступные запросы
 
-* [GET] http://localhost:8081/api/book/filter/one - фильтрация книг по названию, автору и категории.<br>
+### Задачи (task)
+
+* [GET] http://localhost:8081/api/task/observers - добавить наблюдателя в задачу.<br>
   Params:<br>
-  categoryName: ""<br>
-  title: ""<br>
-  author: ""<br>
-* [GET] http://localhost:8081/api/book
-* [GET] http://localhost:8081/api/book/category/{categoryName}
-* [POST] http://localhost:8081/api/book/
-* [PUT] http://localhost:8081/api/book/{id}
-* [DELETE] http://localhost:8081/api/book/{id}
+  taskId: ""<br>
+  userId: ""<br>
+* [GET] http://localhost:8081/api/task
+* [GET] http://localhost:8081/api/task/{id}
+* [POST] http://localhost:8081/api/task/
+* [PUT] http://localhost:8081/api/task/{id}
+* [DELETE] http://localhost:8081/api/task/{id}
 
-Default Request:<br>JSON:{{"title": "","content": "","categoryName": "","author": ""}}
+Default JSON:{{"name": "",
+"description": "",
+"status": "",
+"assigneeId": "",
+"authorId": "",
+"observerIds":[]}
+### Пользователь (user)
+* [GET] http://localhost:8081/api/user
+* [GET] http://localhost:8081/api/user/{id}
+* [POST] http://localhost:8081/api/user/
+* [PUT] http://localhost:8081/api/user/{id}
+* [DELETE] http://localhost:8081/api/user/{id}
 
-Default Response:<br>JSON:{{"title": "","content": "","categoryName": "","author": ""}}
-
+  Default JSON:{{"username": "","email": ""}
 ## Значения по умолчанию
+
 ### Docker variables
-SERVER_URL - url для подключения к Базе данных.<br>
-По умолчанию: jdbc:postgresql://db:5432/news_service_db
 
-SERVER_USERNAME - Имя пользователя в Базе данных.<br>
-По умолчанию: user
-
-SERVER_PASS - Пароль пользователя в Базе данных.<br>
-По умолчанию: pass
-
-REDIS_HOST - Хост подключения redis.<br>
-По умолчанию: redis
-
-REDIS_PORT - Порт подключения redis.<br>
-По умолчанию: 6379
+MONGODB_HOST - Хост подключения redis.<br>
+По умолчанию: mongodb
 
 ## How To Use
+
 ```
 mvn clean install
-docker build -t contact-list .
+docker build -t task-tracker .
 docker compose up
 ```
