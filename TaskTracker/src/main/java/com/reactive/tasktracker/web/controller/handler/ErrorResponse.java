@@ -1,4 +1,4 @@
-package com.rest.newsservice.web.model;
+package com.reactive.tasktracker.web.controller.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

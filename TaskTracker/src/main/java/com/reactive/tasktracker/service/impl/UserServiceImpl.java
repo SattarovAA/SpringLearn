@@ -1,11 +1,14 @@
 package com.reactive.tasktracker.service.impl;
 
+import java.text.MessageFormat;
 import java.util.Set;
 
+import com.reactive.tasktracker.exception.AlreadyExitsException;
 import com.reactive.tasktracker.model.User;
 import com.reactive.tasktracker.repository.UserRepository;
 import com.reactive.tasktracker.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -17,6 +20,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Flux<User> findAll() {
         return userRepository.findAll();
@@ -26,17 +30,50 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    public Mono<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
     public Mono<User> save(User user) {
         return userRepository.save(user);
     }
 
+    public Mono<User> checkDuplicateUsername(User user) {
+        return findByUsername(user.getUsername())
+                .hasElement()
+                .flatMap(res -> {
+                    if (res) {
+                        return Mono.empty();
+                    }
+                    return Mono.just(user);
+                })
+                .switchIfEmpty(Mono.error(
+                        new AlreadyExitsException(
+                                MessageFormat.format("Username {0} already exist!",
+                                        user.getUsername()
+                                )
+                        ))
+                );
+    }
+
     public Mono<User> update(String id, User model) {
         return userRepository.findById(id).flatMap(modelToUpdate -> userRepository.save(
-                new User(
-                        id,
-                        StringUtils.hasText(model.getUsername()) ? model.getUsername() : modelToUpdate.getUsername(),
-                        StringUtils.hasText(model.getEmail()) ? model.getEmail() : modelToUpdate.getEmail()
-                )));
+                User.builder()
+                        .id(id)
+                        .username(StringUtils.hasText(model.getUsername())
+                                ? model.getUsername()
+                                : modelToUpdate.getUsername())
+                        .password(StringUtils.hasText(model.getPassword())
+                                ? passwordEncoder.encode(model.getPassword())
+                                : modelToUpdate.getPassword())
+                        .email(StringUtils.hasText(model.getEmail())
+                                ? model.getEmail()
+                                : modelToUpdate.getEmail())
+                        .roles(model.getRoles() != null
+                                ? model.getRoles()
+                                : modelToUpdate.getRoles())
+                        .build()
+        ));
     }
 
     public Mono<Void> deleteById(String id) {

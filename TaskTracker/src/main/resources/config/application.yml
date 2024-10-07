@@ -7,5 +7,11 @@ spring:
       database: appdatabase
       authentication-database: admin
       auto-index-creation: true
+
+app:
+  jwt:
+    secretKey: "===============secret=====Key=====Some==============="
+    tokenExpiration: 10m
+
 server:
   port: 8081

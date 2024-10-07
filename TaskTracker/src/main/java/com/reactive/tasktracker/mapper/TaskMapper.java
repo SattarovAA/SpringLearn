@@ -1,8 +1,8 @@
 package com.reactive.tasktracker.mapper;
 
 import com.reactive.tasktracker.model.Task;
-import com.reactive.tasktracker.web.model.request.TaskRequest;
-import com.reactive.tasktracker.web.model.response.TaskResponse;
+import com.reactive.tasktracker.web.model.task.TaskRequest;
+import com.reactive.tasktracker.web.model.task.TaskResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
