@@ -1,11 +1,20 @@
 package com.rest.newsservice.web.model.user;
 
-import lombok.*;
+import com.rest.newsservice.model.security.RoleType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class UserResponse {
-    private String name;
+    private Long id;
+    private String username;
+    private String password;
+    private Set<RoleType> roles;
 }

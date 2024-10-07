@@ -11,5 +11,18 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: true
+  data:
+    redis:
+      port: ${REDIS_PORT:6379}
+      host: ${REDIS_HOST:localhost}
+
+app:
+  jwt:
+    secretKey: "===============secret=====Key=====Some==============="
+    tokenExpiration: 5m
+    refreshTokenExpiration: 30m
+  redis:
+    enabled: ${REDIS_ENABLED:false}
+
 server:
   port: 8081

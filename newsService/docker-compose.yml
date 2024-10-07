@@ -4,14 +4,16 @@ services:
     image: news-service
     depends_on:
       - db
+      - redis
     environment:
-      - "SERVER_URL=jdbc:postgresql://db:5432/contacts_db"
+      - "SERVER_URL=jdbc:postgresql://db:5432/news_service_db"
       - "SERVER_USERNAME=user"
       - "SERVER_PASS=pass"
+      - "REDIS_ENABLED=true"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6379"
     ports:
       - "8081:8081"
-    networks:
-      - postgres_bd
   db:
     image: postgres:latest
     container_name: db
@@ -19,10 +21,11 @@ services:
     environment:
       - 'POSTGRES_USER=user'
       - 'POSTGRES_PASSWORD=pass'
-      - 'POSTGRES_DB=contacts_db'
+      - 'POSTGRES_DB=news_service_db'
     ports:
       - "5432:5432"
-    networks:
-      - postgres_bd
-networks:
-  postgres_bd:
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"

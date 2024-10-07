@@ -21,12 +21,12 @@ public interface NewsMapper {
     News requestToNews(Long newsId, NewsRequest newsRequest);
 
     @Mapping(source = "category.name", target = "categoryName")
-    @Mapping(source = "user.name", target = "userName")
+    @Mapping(source = "user.username", target = "userName")
     @Mapping(source = "comments", target = "commentList")
     NewsResponseWithComments newsToResponseWithComments(News news);
 
     @Mapping(source = "category.name", target = "categoryName")
-    @Mapping(source = "user.name", target = "userName")
+    @Mapping(source = "user.username", target = "userName")
     @Mapping(target = "commentAmount", expression = "java(news.getComments().size())")
     NewsResponse newsToResponseForList(News news);
 

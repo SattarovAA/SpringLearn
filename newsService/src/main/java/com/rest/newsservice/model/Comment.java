@@ -1,10 +1,7 @@
 package com.rest.newsservice.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -16,6 +13,7 @@ import java.time.Instant;
 @Setter
 @Getter
 @FieldNameConstants
+@Builder
 @Entity
 @Table(name = "comments")
 public class Comment{

@@ -19,7 +19,7 @@ public interface CommentMapper {
     @Mapping(source = "commentId", target = "id")
     Comment requestToComment(Long commentId, CommentRequest commentRequest);
 
-    @Mapping(source = "user.name", target = "userName")
+    @Mapping(source = "user.username", target = "userName")
     CommentResponse commentToResponse(Comment comment);
 
     List<CommentResponse> commentListToCommentResponseList(List<Comment> comments);
