@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: HotelBooking
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SERVER_URL:jdbc:postgresql://localhost:5432/hotel_booking_db}
+    username: ${SERVER_USERNAME:postgres}
+    password: ${SERVER_PASS:1322}
+  data:
+    mongodb:
+      username: root
+      password: root
+      host: ${MONGODB_HOST:localhost}
+      database: appdatabase
+      authentication-database: admin
+      auto-index-creation: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER:localhost:9092}
+app:
+  kafka:
+    kafkaMessageTopicRegistration: "user-register-topic"
+    kafkaMessageTopicReservation: "user-reservation-topic"
+    kafkaMessageGroupId: "kafka-message-group-id-2"
+server:
+  port: 8081

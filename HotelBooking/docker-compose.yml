@@ -1,0 +1,54 @@
+version: '3'
+services:
+  hotel-booking:
+    image: hotel-booking
+    depends_on:
+      - db
+      - mongodb
+      - kafka
+    environment:
+      SERVER_URL: jdbc:postgresql://db:5432/hotel_booking_db
+      SERVER_USERNAME: user
+      SERVER_PASS: pass
+      MONGODB_HOST: mongodb
+      KAFKA_SERVER: kafka:9092
+    ports:
+      - "8081:8081"
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=hotel_booking_db
+    ports:
+      - "5432:5432"
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: appdatabase
+    ports:
+      - "27017:27017"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+  kafka:
+    image: confluentinc/cp-kafka:6.2.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO, kafka.producer.async.DefaultEventHandler=INFO, state.change.logger=INFO"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPIC_ENABLE: 'true'
+    ports:
+      - "9092:9092"
