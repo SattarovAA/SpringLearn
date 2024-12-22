@@ -8,10 +8,10 @@ spring:
     password: ${SERVER_PASS:1322}
   data:
     mongodb:
-      username: root
-      password: root
+      username: ${MONGODB_SERVER_USERNAME:root}
+      password: ${MONGODB_SERVER_PASS:root}
       host: ${MONGODB_HOST:localhost}
-      database: appdatabase
+      database: ${MONGODB_SERVER_DATABASE:appdatabase}
       authentication-database: admin
       auto-index-creation: true
   jpa:
@@ -21,10 +21,35 @@ spring:
     open-in-view: true
   kafka:
     bootstrap-servers: ${KAFKA_SERVER:localhost:9092}
+
 app:
+  openapi:
+    dev-url: http://localhost:8088
   kafka:
     kafkaMessageTopicRegistration: "user-register-topic"
     kafkaMessageTopicReservation: "user-reservation-topic"
     kafkaMessageGroupId: "kafka-message-group-id-2"
+    listener:
+      registration-event: ${KAFKA_LISTENERS_ENABLED:false}
+      reservation-event: ${KAFKA_LISTENERS_ENABLED:false}
+  service:
+    user:
+      defaultPageSize: 10
+      defaultPageNumber: 0
+    room:
+      defaultPageSize: 10
+      defaultPageNumber: 0
+    hotel:
+      defaultPageSize: 10
+      defaultPageNumber: 0
+    reservation:
+      defaultPageSize: 10
+      defaultPageNumber: 0
+    reservationEvent:
+      defaultPageSize: 10
+      defaultPageNumber: 0
+    registrationEvent:
+      defaultPageSize: 10
+      defaultPageNumber: 0
 server:
-  port: 8081
+  port: 8088

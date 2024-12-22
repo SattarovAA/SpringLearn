@@ -11,17 +11,21 @@ services:
       SERVER_USERNAME: user
       SERVER_PASS: pass
       MONGODB_HOST: mongodb
+      MONGODB_SERVER_USERNAME: root
+      MONGODB_SERVER_PASS: root
+      MONGODB_SERVER_DATABASE: appdatabase
       KAFKA_SERVER: kafka:9092
+      KAFKA_LISTENERS_ENABLED: true
     ports:
-      - "8081:8081"
+      - "8088:8088"
   db:
     image: postgres:latest
     container_name: db
     restart: always
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=hotel_booking_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: hotel_booking_db
     ports:
       - "5432:5432"
   mongodb:

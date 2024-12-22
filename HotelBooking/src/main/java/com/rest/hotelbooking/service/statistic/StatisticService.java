@@ -2,11 +2,22 @@ package com.rest.hotelbooking.service.statistic;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-
+/**
+ * General service interface for working with statistics.
+ */
 public interface StatisticService {
+    /**
+     * Generate ReservationEvent csv.
+     * TODO rework?!
+     *
+     * @param response HttpServletResponse for generate Csv.
+     */
+    void generateReservationEventCsv(HttpServletResponse response);
 
-    void generateReservationEventCsv(HttpServletResponse response) throws IOException;
-
-    void generateRegistrationEventCsv(HttpServletResponse response) throws IOException;
+    /**
+     * Generate RegistrationEvent csv.
+     *
+     * @param response HttpServletResponse for generate Csv.
+     */
+    void generateRegistrationEventCsv(HttpServletResponse response);
 }

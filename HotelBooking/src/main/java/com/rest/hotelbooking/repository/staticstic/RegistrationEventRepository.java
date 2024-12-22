@@ -1,7 +1,11 @@
 package com.rest.hotelbooking.repository.staticstic;
 
-import com.rest.hotelbooking.model.statistic.RegistrationEvent;
+import com.rest.hotelbooking.model.entity.statistic.RegistrationEvent;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface RegistrationEventRepository extends MongoRepository<RegistrationEvent, String> {
+/**
+ * MongoRepository for working with {@link RegistrationEvent} entity.
+ */
+public interface RegistrationEventRepository
+        extends MongoRepository<RegistrationEvent, String> {
 }
