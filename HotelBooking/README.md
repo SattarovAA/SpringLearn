@@ -1,172 +1,96 @@
 # Hotel booking
-
-Небольшой REST API «<Бронирование Отеля>» с использованием Spring MVC.
-
-Работа с базой данных с использованием Spring Boot Data JPA. Авторизация пользователей.<br>
+Небольшой REST API «<Бронирование Отеля>» с использованием Spring MVC.<br>
+Работа с базой данных Postgres с использованием Spring Boot Data JPA. Авторизация пользователей.<br>
 Фильтрация запросов с использованием спецификаций.<br>
 Маппинг сущностей с использованием MapStruct.<br>
-
-Слой статистики получает данные из Kafka и хранит в MongoDB.<br>
-Предоставляет эндпоинт для выгрузки статистических данных в CSV-файл.
-
-## Доступные запросы
-
-### Авторизация
-
-* [POST] http://localhost:8081/api/auth/register <br>
-  Регистрация нового пользователя в системе.<br>
-  Request:<br>JSON:{{"username": "","password": "","roles":[]}}
-
-### Отели (Hotels)
-
-Создание, редактирование и удаление отеля доступно только пользователям с правами ROLE_ADMIN.<br>
-При возврате списка отелей ответ не содержит списка комнат к каждой отелю.
-
-* [GET] http://localhost:8081/api/hotel/filter <br>
-  Params:<br>
-  id: <br>
-  adTitle: ""<br>
-  name: ""<br>
-  city: ""<br>
-  address: ""<br>
-  maxDistanceFromCenter: <br>
-  minDistanceFromCenter: <br>
-  maxRating: <br>
-  minRating: <br>
-  maxNumberOfRatings: <br>
-  minNumberOfRatings: <br>
-  pageSize: NotNull, Positive<br>
-  pageNumber: NotNull
-* [POST] http://localhost:8081/api/hotel/rating/{id} - добавление новой оценки отеля.
-  Default Request:<br>JSON:{{"value": }}
-* [GET] http://localhost:8081/api/hotel
-* [GET] http://localhost:8081/api/hotel/{id}
-* [POST] http://localhost:8081/api/hotel
-* [PUT] http://localhost:8081/api/hotel/{id}
-* [DELETE] http://localhost:8081/api/hotel/{id}
-
-Default Request:<br>JSON:{{"adTitle": "","name": "","city": "","address": "","distanceFromCenter": ""}}
-
-Default Response:<br>JSON:{{"adTitle": "","name": "","city": "","address": "","distanceFromCenter": "","
-numberOfRatings": "","rating": "","rooms":[]}}
-
-### Комнаты (Rooms)
-
-Создание, редактирование и удаление комнаты доступно только пользователям с правами ROLE_ADMIN.<br>
-
-* [GET] http://localhost:8081/api/room/filter <br>
-  Params:<br>
-  id: <br>
-  name: ""<br>
-  description: ""<br>
-  number: ""<br>
-  maxCost: <br>
-  minCost: <br>
-  maxCapacity: <br>
-  minCapacity: <br>
-  hotelId: <br>
-  checkIn: "yyyy-mm-dd"<br>
-  checkOut: "yyyy-mm-dd"<br>
-  pageSize: NotNull, Positive<br>
-  pageNumber: NotNull
-* [GET] http://localhost:8081/api/room
-* [GET] http://localhost:8081/api/room/{id}
-* [POST] http://localhost:8081/api/room
-* [PUT] http://localhost:8081/api/room/{id}
-* [DELETE] http://localhost:8081/api/room/{id}
-
-Default Request:<br>JSON:{{"name": "","description": "","number": "","cost": ,"capacity": ,"hotelId": }}
-
-Default Response:<br>JSON:{{"name": "","description": "","number": "","cost": ,"capacity": ,"hotelId": ,"
-reservations": []}}
-
-### Бронирования (Reservations)
-
-Получение списка бронирований доступно только пользователям с правами ROLE_ADMIN.
-
-* [GET] http://localhost:8081/api/reservation
-* [POST] http://localhost:8081/api/reservation
-
-Default Request:<br>JSON:{{"checkIn": "yyyy-mm-dd","checkOut": "yyyy-mm-dd","roomId": }}
-
-Default Response:<br>JSON:{{"checkIn": "yyyy-mm-dd","checkOut": "yyyy-mm-dd","roomId": }}
-
-### Пользователи (users)
-
-* [GET] http://localhost:8081/api/user/{id}
-* [PUT] http://localhost:8081/api/user/{id}
-* [DELETE] http://localhost:8081/api/user/{id}
-
-Default Request:<br>JSON:{{"username": "","password": "","email": ,"roles": []}}
-
-Default Request:<br>JSON:{{"username": "","password": "","email": ,"roles": []}}
-
-## Статистика (statistic)
-
-Доступно только пользователям с правами ROLE_ADMIN
-
-* [GET] http://localhost:8081/api/statistic/csv/register_event <br>
-  Request:<br>CSV:{"id"}
-* [GET] http://localhost:8081/api/statistic/csv/reservation_event <br>
-  Request:<br>CSV:{"id","checkIn","checkOut"}
-
-## Структура БД
-
-Данные для слоя статистика хранятся в MongoDb в формате JSON.<br>
-RegistrationEvent:<br>JSON:{{"id"}}<br>
-ReservationEvent:<br>JSON:{{"id","checkIn","checkOut"}}
-
-| table_name   | primary | column   | column   | column | column   | column               | column   | column            |
-|--------------|---------|----------|----------|--------|----------|----------------------|----------|-------------------|
-| hotels       | id      | ad_title | city     | name   | address  | distance_from_center | rating   | number_of_ratings |
-| rooms        | id      | hotel_id | number   | name   | cost     | description          | capacity |
-| reservations | id      | room_id  | user_id  | name   | check_in | check_out            |
-| users        | id      | username | password | email  |
-| user_roles   |         | user_id  | roles    |
-
-## Значения по умолчанию
-
-### application.yml
-
-spring.datasource.url:<br> по умолчанию: jdbc:postgresql://localhost:5432/hotel_booking_db.
-
-spring.datasource.username:<br> по умолчанию: user.
-
-spring.datasource.password:<br> по умолчанию: pass.
-
-spring.data.mongodb.host:<br> по умолчанию: localhost
-
-spring.kafka.bootstrap-servers:<br> по умолчанию: localhost:9092
-
-app.kafka.kafkaMessageTopicRegistration:<br> по умолчанию: "user-register-topic"
-
-app.kafka.kafkaMessageTopicReservation:<br> по умолчанию: "user-reservation-topic"
-
-app.kafka.kafkaMessageGroupId:<br> по умолчанию: "kafka-message-group-id-2"
-
-server.port:<br> по умолчанию: 8081.
-
-### Docker variables
-
-SERVER_URL - url для подключения к Базе данных.<br>
-По умолчанию: jdbc:postgresql://db:5432/news_service_db
-
-SERVER_USERNAME - Имя пользователя в Базе данных.<br>
-По умолчанию: user
-
-SERVER_PASS - Пароль пользователя в Базе данных.<br>
-По умолчанию: pass
-
-MONGODB_HOST - Хост подключения mongodb.<br>
-По умолчанию: mongodb
-
-KAFKA_SERVER - адрес подключения к kafka.<br>
-По умолчанию: kafka:9092
-
+Гибридный слой статистики из Kafka и MongoDB имеющий эндпоинт для выгрузки статистических данных в CSV-файл.
 ## How To Use
-
 ```
 mvn clean install
 docker build -t hotel-booking .
 docker compose up
 ```
+## Доступные запросы
+## Swagger-ui
+http://localhost:8088/swagger-ui/index.html
+### Авторизация
+* [POST] http://localhost:8088/api/auth/register <br>
+  Регистрация нового пользователя в системе.
+### Отели (Hotels)
+Создание, редактирование и удаление отеля доступно только пользователям с правами ROLE_ADMIN.<br>
+При возврате списка отелей ответ не содержит списка комнат к каждой отелю.
+* [GET] http://localhost:8088/api/hotel/filter
+* [POST] http://localhost:8088/api/hotel/rating/{id} - добавление новой оценки отеля.
+* [GET] http://localhost:8088/api/hotel
+* [GET] http://localhost:8088/api/hotel/{id}
+* [POST] http://localhost:8088/api/hotel
+* [PUT] http://localhost:8088/api/hotel/{id}
+* [DELETE] http://localhost:8088/api/hotel/{id}
+### Комнаты (Rooms)
+Создание, редактирование и удаление комнаты доступно только пользователям с правами ROLE_ADMIN.<br>
+* [GET] http://localhost:8088/api/room/filter
+* [GET] http://localhost:8088/api/room
+* [GET] http://localhost:8088/api/room/{id}
+* [POST] http://localhost:8088/api/room
+* [PUT] http://localhost:8088/api/room/{id}
+* [DELETE] http://localhost:8088/api/room/{id}
+### Бронирования (Reservations)
+Получение списка бронирований доступно только пользователям с правами ROLE_ADMIN.
+* [GET] http://localhost:8088/api/reservation
+* [POST] http://localhost:8088/api/reservation
+### Пользователи (users)
+* [GET] http://localhost:8088/api/user/{id}
+* [PUT] http://localhost:8088/api/user/{id}
+* [DELETE] http://localhost:8088/api/user/{id}
+## Статистика (statistic)
+Доступно только пользователям с правами ROLE_ADMIN
+* [GET] http://localhost:8088/api/statistic/csv/register_event
+* [GET] http://localhost:8088/api/statistic/csv/reservation_event
+## Структура БД
+Данные для слоя статистика хранятся в MongoDb в формате JSON.<br>
+RegistrationEvent:<br>JSON:{{"id"}}<br>
+ReservationEvent:<br>JSON:{{"id","checkIn","checkOut"}}
+| table_name   | primary | foreign  | foreign | column   | column               | column            | column  | column   | column | column |
+|--------------|---------|----------|---------|----------|----------------------|-------------------|---------|----------|--------|--------|
+| hotels       | id      |          |         | ad_title | distance_from_center | number_of_ratings | address | rating   | city   | name   |
+| rooms        | id      | hotel_id |         | number   | name                 | description       | cost    | capacity |
+| reservations | id      | room_id  | user_id | name     | check_in             | check_out         |
+| users        | id      |          |         | email    | username             | password          |
+| user_roles   |         | user_id  |         | roles    |
+## Значения по умолчанию
+### application.yml
+spring.datasource.url:<br> по умолчанию: jdbc:postgresql://localhost:5432/hotel_booking_db.
+spring.datasource.username:<br> по умолчанию: user<br>
+spring.datasource.password:<br> по умолчанию: pass<br>
+spring.data.mongodb.host:<br> по умолчанию: localhost<br>
+spring.data.mongodb.username:<br> по умолчанию: root<br>
+spring.data.mongodb.pass:<br> по умолчанию: root<br>
+spring.data.mongodb.database:<br> по умолчанию: appdatabase<br>
+spring.kafka.bootstrap-servers:<br> по умолчанию: localhost:9092<br>
+app.kafka.kafkaMessageTopicRegistration:<br> по умолчанию: "user-register-topic"<br>
+app.kafka.kafkaMessageTopicReservation:<br> по умолчанию: "user-reservation-topic"<br>
+app.kafka.kafkaMessageGroupId:<br> по умолчанию: "kafka-message-group-id-2"<br>
+app.kafka.listeners.registration-event<br> по умолчанию: false<br>
+app.kafka.listeners.reservation-event<br> по умолчанию: false<br>
+server.port:<br> по умолчанию: 8088.
+### Docker variables
+SERVER_URL - url для подключения Postgres.<br>
+По умолчанию: jdbc:postgresql://db:5432/hotel_booking_db<br>
+SERVER_USERNAME - Имя пользователя в Postgres.<br>
+По умолчанию: user<br>
+SERVER_PASS - Пароль пользователя в Postgres.<br>
+По умолчанию: pass<br>
+MONGODB_HOST - Хост подключения MongoDb.<br>
+По умолчанию: mongodb<br>
+MONGODB_SERVER_USERNAME - Имя пользователя в MongoDb.<br>
+По умолчанию: root<br>
+MONGODB_SERVER_PASS - Пароль пользователя в MongoDb.<br>
+По умолчанию: root<br>
+MONGODB_HOST - host для подключения MongoDb.<br>
+По умолчанию: localhost<br>
+MONGODB_SERVER_DATABASE - database для подключения MongoDb.<br>
+По умолчанию: appdatabase<br>
+KAFKA_SERVER - адрес подключения к kafka.<br>
+По умолчанию: kafka:9092<br>
+KAFKA_LISTENERS_ENABLED - kafka listeners.<br>
+По умолчанию: true<br>
