@@ -19,11 +19,6 @@ public interface HotelService extends CrudService<Hotel> {
     List<Hotel> filterBy(HotelFilter filter);
 
     /**
-     * TODO toDelete.
-     */
-    void addNewMarkSynchronizedTest(Long hotelId);
-
-    /**
      * Add new Mark to the hotel and update
      * hotel rating and hotel numberOfRating.
      *

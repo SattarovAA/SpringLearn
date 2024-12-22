@@ -5,8 +5,6 @@ import com.rest.hotelbooking.exception.EntityNotFoundException;
 import com.rest.hotelbooking.model.dto.hotel.HotelFilter;
 import com.rest.hotelbooking.model.dto.hotel.mark.HotelMark;
 import com.rest.hotelbooking.model.entity.Hotel;
-import com.rest.hotelbooking.model.entity.Reservation;
-import com.rest.hotelbooking.model.entity.Room;
 import com.rest.hotelbooking.repository.HotelRepository;
 import com.rest.hotelbooking.repository.specification.HotelSpecifications;
 import com.rest.hotelbooking.service.HotelService;
